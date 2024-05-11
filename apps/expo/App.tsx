@@ -25,7 +25,7 @@ if (Platform.OS !== "web") {
 
 LogBox.ignoreLogs(["Could not find image"]);
 
-if (Platform.OS !== "android") {
+if (Platform.OS === "android") {
   NavigationBar.setBackgroundColorAsync("white");
 }
 

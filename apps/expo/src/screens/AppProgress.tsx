@@ -20,6 +20,7 @@ export default function UploadScreen({
       }
     }, 750);
   }, [visible, progress]);
+
   return (
     <Modal visible={visible} animationType="slide">
       <View className="flex-1 items-center justify-center">

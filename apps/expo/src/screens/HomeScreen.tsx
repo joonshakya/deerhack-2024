@@ -23,7 +23,7 @@ import { colors } from "tailwind.config";
 
 import AppImage from "~/components/AppImage";
 import AppText from "~/components/AppText";
-import { QrScanner } from "~/components/QrScanner";
+import InfoText from "~/components/InfoText";
 import SquareItem from "~/components/SquareItem";
 import { navigate } from "~/navigation/routeNavigation";
 import { useAuthStore, useBearStore } from "~/store";
@@ -34,13 +34,7 @@ import { ListItemSeparator } from "../components/lists";
 import Screen from "../components/Screen";
 import { AppNavigatorParamList } from "../navigation/AppNavigator";
 import routes from "../navigation/routes";
-import {
-  AppointmentStatusChoice,
-  AppointmentTypeChoice,
-  EducationLevelChoice,
-  EducationStreamChoice,
-  UserTypeChoice,
-} from ".prisma/client";
+import { UserTypeChoice } from ".prisma/client";
 
 export default function HomeScreen({
   navigation,
@@ -55,7 +49,7 @@ export default function HomeScreen({
 
   useEffect(() => {
     navigation.setOptions({
-      headerTitle: `Welcome back, ${user.fullName}`,
+      headerTitle: `Hi, ${user.fullName}`,
     });
   }, [user]);
 
@@ -86,174 +80,9 @@ export default function HomeScreen({
       className="px-5"
     >
       <Services navigation={navigation} />
-      <Appointments navigation={navigation} />
-      {user.type !== UserTypeChoice.CUSTOMER && (
-        <VolunteerScreen navigation={navigation} />
-      )}
+
       {/* <ModelThreeDRendered /> */}
     </Screen>
-  );
-}
-
-function Appointments({
-  navigation,
-}: {
-  navigation: NativeStackNavigationProp<AppNavigatorParamList, routes.HOME>;
-}) {
-  const user = useAuthStore((state) => state.user)!;
-  const { data: appointments, refetch } =
-    trpc.appointment.listActive.useQuery();
-
-  useFocusEffect(
-    useCallback(() => {
-      refetch();
-    }, []),
-  );
-
-  return (
-    appointments &&
-    (appointments.length > 0 || user.type === UserTypeChoice.VOLUNTEER) && (
-      <>
-        <AppText bigText className="mb-5 font-bold">
-          Appointments
-        </AppText>
-        {appointments.length > 0 ? (
-          <View className="flex-row flex-wrap justify-between">
-            {appointments.map(({ giver, id, taker, type }) => (
-              <TouchableHighlight
-                key={id}
-                accessibilityRole="button"
-                underlayColor="#1775d4"
-                onPress={() => {
-                  navigation.push(routes.USER_PROFILE, {
-                    userId:
-                      user.type === UserTypeChoice.CUSTOMER
-                        ? giver?.id
-                        : taker.id,
-                    noBackRoute: false,
-                  });
-                }}
-                className="bg-primary mb-4 min-h-[112] w-[47%] justify-between rounded-xl p-5 pb-2"
-              >
-                <>
-                  <View className="h-10 w-10 items-center justify-center rounded-full">
-                    {(
-                      user.type === UserTypeChoice.CUSTOMER
-                        ? giver?.avatar
-                        : taker.avatar
-                    ) ? (
-                      <AppImage
-                        source={{
-                          uri: `${
-                            user.type === UserTypeChoice.CUSTOMER
-                              ? giver?.avatar
-                              : taker.avatar
-                          }`,
-                        }}
-                        alt={`${
-                          user.type === UserTypeChoice.CUSTOMER
-                            ? giver?.fullName
-                            : taker.fullName
-                        }'s avatar`}
-                        className="h-10 w-10 rounded-full"
-                      />
-                    ) : (
-                      <Image
-                        source={require("../assets/default-avatar.png")}
-                        alt={`${
-                          user.type === UserTypeChoice.CUSTOMER
-                            ? giver?.fullName
-                            : taker.fullName
-                        }'s avatar`}
-                        className="h-10 w-10 rounded-full"
-                      />
-                    )}
-                  </View>
-                  <AppText className="mt-2 text-lg font-bold leading-6 text-white">
-                    {user.type === UserTypeChoice.CUSTOMER
-                      ? giver?.fullName
-                      : taker.fullName}
-                  </AppText>
-                  <AppText className="text-sm leading-6 text-white">
-                    {toTitleCase(type)}
-                  </AppText>
-                </>
-              </TouchableHighlight>
-            ))}
-          </View>
-        ) : (
-          <AppText className="text-mediumGray mb-4 text-center">
-            No active appointments
-          </AppText>
-        )}
-      </>
-    )
-  );
-}
-
-function VolunteerScreen({
-  navigation,
-}: {
-  navigation: NativeStackNavigationProp<AppNavigatorParamList, routes.HOME>;
-}) {
-  const { data: usersRequestingHelp, refetch } =
-    trpc.appointment.listNotPaired.useQuery();
-
-  useFocusEffect(
-    useCallback(() => {
-      refetch();
-    }, []),
-  );
-
-  return (
-    usersRequestingHelp &&
-    usersRequestingHelp.length > 0 && (
-      <>
-        <AppText bigText className="mb-5 font-bold">
-          People requesting assistance
-        </AppText>
-        <View className="flex-row flex-wrap justify-between">
-          {usersRequestingHelp.map(({ id, taker }) => (
-            <TouchableHighlight
-              key={id}
-              accessibilityRole="button"
-              underlayColor={colors.highlight}
-              onPress={() => {
-                navigation.push(routes.USER_PROFILE, {
-                  userId: taker.id,
-                  noBackRoute: false,
-                });
-              }}
-              className="mb-4 min-h-[112] w-[47%] justify-between rounded-xl bg-white p-5 pb-2"
-            >
-              <>
-                <View className="bg-primary h-10 w-10 items-center justify-center rounded-full">
-                  {taker.avatar ? (
-                    <AppImage
-                      source={{
-                        uri: `${taker.avatar}`,
-                      }}
-                      alt={`${taker.fullName}'s avatar`}
-                      className="h-10 w-10 rounded-full"
-                    />
-                  ) : (
-                    <Image
-                      source={require("../assets/default-avatar.png")}
-                      alt={`${taker.fullName}'s avatar`}
-                      className="h-10 w-10 rounded-full"
-                    />
-                  )}
-                </View>
-                <AppText className="mt-2 text-lg leading-6">
-                  {taker.fullName}
-                </AppText>
-                <AppText className="text-sm leading-6">Scribe</AppText>
-              </>
-            </TouchableHighlight>
-          ))}
-        </View>
-      </>
-    )
   );
 }
 
@@ -264,41 +93,49 @@ function Services({
 }) {
   const user = useAuthStore((state) => state.user)!;
 
+  const { data, isLoading, refetch } = trpc.event.list.useQuery();
+
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
     <>
-      <AppText bigText className="my-5 font-bold">
-        Services
+      <AppText bigText className="my-4 font-bold">
+        My events
       </AppText>
-      <View className="flex-row flex-wrap justify-between">
-        {[
-          {
-            name: "QR Code Scanner",
-            onPress: () => setModalOpen(true),
-            iconName: "qrcode-scan",
-          },
-          ...(user.type === UserTypeChoice.CUSTOMER
-            ? [
-                {
-                  name: "Find Scribe",
-                  onPress: () => {
-                    navigation.navigate(routes.FIND_SCRIBE);
-                  },
-                  iconName: "account-search",
-                },
-              ]
-            : []),
-        ].map(({ name, onPress, iconName }) => (
-          <SquareItem
-            key={name}
-            name={name}
-            onPress={onPress}
-            iconName={iconName}
-          />
+
+      {data?.length === 0 && (
+        <InfoText text="No events found. Create one now!" />
+      )}
+      <View className="flex-row flex-wrap">
+        {data?.map(({ title, id, image }) => (
+          <TouchableOpacity
+            key={id}
+            accessibilityRole="button"
+            onPress={() => {
+              navigation.navigate(routes.CREATE_EVENT, {
+                eventId: id,
+              });
+            }}
+            className="w-[50%] p-2"
+          >
+            <>
+              <View className="mb-2 justify-between rounded-xl bg-white">
+                <Image
+                  className="h-[180] w-full rounded-xl"
+                  source={{
+                    uri: "https://www.joon.com.np/Joon.png",
+                  }}
+                  height={10}
+                  width={10}
+                />
+              </View>
+              <AppText className="mt-2 text-center text-lg leading-6">
+                {title}
+              </AppText>
+            </>
+          </TouchableOpacity>
         ))}
       </View>
-      <QrScanner modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </>
   );
 }

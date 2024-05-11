@@ -1,3 +1,4 @@
+import cors from "@fastify/cors";
 import ws from "@fastify/websocket";
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
@@ -27,7 +28,10 @@ const prefix = "/";
 const server = fastify({
   logger: false,
 });
-
+void server.register(cors, {
+  origin: "http://localhost:5173",
+  credentials: true,
+});
 void server.register(ws);
 void server.register(fastifyTRPCPlugin, {
   prefix,

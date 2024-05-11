@@ -4,8 +4,10 @@ import {
   NativeStackNavigationProp,
 } from "@react-navigation/native-stack";
 
-import FindScribeScreen from "~/screens/FindScribeScreen";
+import EventCreateScreen from "~/screens/EventCreateScreen";
+import FindScribeScreen from "~/screens/FormBuilderScreen";
 import NotificationsScreen from "~/screens/NotificationsScreen";
+import QrInfoScreen from "~/screens/QrInfoScreen";
 import { animation } from "../config/animation";
 import defaultStyles from "../config/styles";
 import HomeScreen from "../screens/HomeScreen";
@@ -25,39 +27,24 @@ type ToolsParamList = {
 };
 
 type MultipleScreensParamList = {
-  [routes.USER_PROFILE]: {
-    noBackRoute: boolean;
-    userId?: string;
-  };
-  [routes.FIND_SCRIBE]: undefined;
+  [routes.FORM_BUILDER]: undefined;
   [routes.NOTIFICATIONS]: undefined;
-  [routes.ROOM_LIST]: {
-    fromRoomId: string;
+  [routes.CREATE_EVENT]:
+    | {
+        eventId: string;
+      }
+    | undefined;
+  [routes.QR_SCANNER]: undefined;
+  [routes.QR_INFO]: {
+    id: string;
+    invalidate: boolean;
   };
-  [routes.DIRECTIONS]: {
-    fromRoomId: string;
-    toRoomId: string;
-  };
-  [routes.SHARE_APP]: undefined;
 };
 
 export type AppNavigatorParamList = HomeTabParamList &
   HomeTabNavigatorParamList &
   ToolsParamList &
   MultipleScreensParamList;
-
-function backButton(
-  navigation: NativeStackNavigationProp<AppNavigatorParamList>,
-) {
-  return (
-    <Button
-      title="Done"
-      onPress={() => {
-        navigation.goBack();
-      }}
-    />
-  );
-}
 
 export default function AppNavigator() {
   const Stack = createNativeStackNavigator<AppNavigatorParamList>();
@@ -75,26 +62,32 @@ export default function AppNavigator() {
       {/* HomeTab End */}
 
       {/* Tools */}
-      <Stack.Screen component={HomeScreen} name={routes.HOME} />
-
+      {/* <Stack.Screen component={HomeScreen} name={routes.HOME} /> */}
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: "Create Event",
+        }}
+        component={EventCreateScreen}
+        name={routes.CREATE_EVENT}
+      />
       {/* Tools End */}
 
       {/* Multiple Screens */}
       <Stack.Screen
         options={{
           headerShown: true,
-          title: "Find Scribe",
         }}
-        component={FindScribeScreen}
-        name={routes.FIND_SCRIBE}
+        component={NotificationsScreen}
+        name={routes.NOTIFICATIONS}
       />
 
       <Stack.Screen
         options={{
           headerShown: true,
         }}
-        component={NotificationsScreen}
-        name={routes.NOTIFICATIONS}
+        component={QrInfoScreen}
+        name={routes.QR_INFO}
       />
 
       {/* Multiple Screens End */}

@@ -7,6 +7,10 @@ import {
 
 export const navigationRef = createRef<NavigationContainerRef<ParamListBase>>();
 
+export function navigateBack() {
+  navigationRef.current?.goBack();
+}
+
 export function navigate(name: string, params: Object) {
   navigationRef.current?.navigate(name, params);
 }

@@ -1,47 +1,37 @@
-import { RefObject, useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  Alert,
+  Button,
   Image,
   Modal,
-  RefreshControl,
-  ScrollView,
   StyleSheet,
   Text,
-  TouchableHighlight,
   TouchableOpacity,
   View,
 } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Audio } from "expo-av";
-import { BarCodeScanner } from "expo-barcode-scanner";
-import { Camera } from "expo-camera";
-import * as WebBrowser from "expo-web-browser";
+import { CameraView, useCameraPermissions } from "expo-camera";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useFocusEffect } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { colors } from "tailwind.config";
 
-import AppText from "~/components/AppText";
-import { navigate } from "~/navigation/routeNavigation";
+import { navigate } from "../navigation/routeNavigation";
 import routes from "../navigation/routes";
+import AppText from "./AppText";
 
 export function QrScanner({
   modalOpen,
   setModalOpen,
-  toRoomId,
 }: {
   modalOpen: boolean;
   setModalOpen: (open: boolean) => void;
-  toRoomId?: string;
 }) {
   const [sound, setSound] = useState<Audio.Sound>();
   const [modalOpenDelay, setModalOpenDelay] = useState(false);
+  const [permission, requestPermission] = useCameraPermissions();
 
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   useEffect(() => {
     if (modalOpen) {
       const getBarCodeScannerPermissions = async () => {
-        const { status } = await BarCodeScanner.requestPermissionsAsync();
+        const { status } = await requestPermission();
         setHasPermission(status === "granted");
       };
       getBarCodeScannerPermissions();
@@ -65,17 +55,36 @@ export function QrScanner({
     };
   }, []);
 
+  const regex = /'ID'\s*:\s*'(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})'/;
+
   const handleBarCodeScanned = ({ data }: { data: string }) => {
-    const slug = data.split("/").pop();
-    if (slug) {
+    setModalOpen(false);
+    const match = data.match(regex);
+    if (match) {
+      const uuid = match[1];
       sound?.replayAsync();
-      setModalOpen(false);
-      navigate(routes.THREE_D_SCANNER_MODEL_DETAILS, {
-        slug,
+      navigate(routes.QR_INFO, {
+        id: uuid,
+        invalidate: true,
       });
     }
   };
 
+  if (!permission) {
+    // Camera permissions are still loading
+    return <View />;
+  }
+  if (!permission.granted) {
+    // Camera permissions are not granted yet
+    return (
+      <View>
+        <Text style={{ textAlign: "center" }}>
+          We need your permission to show the camera
+        </Text>
+        <Button onPress={requestPermission} title="grant permission" />
+      </View>
+    );
+  }
   return (
     <Modal
       onAccessibilityTap={() => setModalOpen(false)}
@@ -99,13 +108,13 @@ export function QrScanner({
           })()}
         </AppText>
         {modalOpenDelay && hasPermission && (
-          <Camera
+          <CameraView
             style={[StyleSheet.absoluteFill]}
-            ratio="16:9"
-            barCodeScannerSettings={{
-              barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
+            focusable
+            barcodeScannerSettings={{
+              barcodeTypes: ["qr"],
             }}
-            onBarCodeScanned={handleBarCodeScanned}
+            onBarcodeScanned={handleBarCodeScanned}
           />
         )}
         <Image

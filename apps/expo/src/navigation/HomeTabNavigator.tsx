@@ -1,7 +1,10 @@
+import { TouchableOpacity } from "react-native";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { colors } from "tailwind.config";
 
 import useNotifications from "~/hooks/useNotifications";
+import ToolsScreen from "~/screens/ToolsScreen";
 import defaultStyles from "../config/styles";
 // import TutorialsScreen from "../screens/TutorialsScreen";
 import HomeScreen from "../screens/HomeScreen";
@@ -13,18 +16,9 @@ import routes from "./routes";
 
 export type HomeTabNavigatorParamList = {
   [routes.HOME]: undefined;
-  [routes.USER_PROFILE]: {
-    noBackRoute: boolean;
-    userId?: string;
-  };
-  [routes.HISTORY]: {
-    noBackRoute: boolean;
-    userId?: string;
-  };
-  [routes.ABOUT]: undefined;
-  [routes.TUTORIALS]: undefined;
   [routes.NOTIFICATIONS]: undefined;
   [routes.SETTINGS]: undefined;
+  [routes.TOOLS]: undefined;
 };
 
 interface TabIconProps {
@@ -34,20 +28,6 @@ interface TabIconProps {
 
 const tabToolsIcon = ({ color, size }: TabIconProps) => (
   <MaterialCommunityIcons color={color} name="tools" size={size} />
-);
-const tabAboutIcon = ({ color, size }: TabIconProps) => (
-  <MaterialCommunityIcons color={color} name="information" size={size} />
-);
-// const tabTutorialsIcon = ({ color, size }: TabIconProps) => (
-//   <MaterialCommunityIcons color={color} name="lightbulb" size={size} />
-// );
-
-const tabAccountIcon = ({ color, size }: TabIconProps) => (
-  <MaterialCommunityIcons color={color} name="account" size={size} />
-);
-
-const tabHistoryIcon = ({ color, size }: TabIconProps) => (
-  <MaterialCommunityIcons color={color} name="history" size={size} />
 );
 
 const tabNotificationsIcon = ({ color, size }: TabIconProps) => (
@@ -71,32 +51,39 @@ export default function HomeTabNavigator() {
       <Tab.Screen
         component={HomeScreen}
         name={routes.HOME}
-        options={{
-          tabBarIcon: tabToolsIcon,
-        }}
-      />
-      {/* <Tab.Screen
-        component={AccountScreen}
-        initialParams={{ noBackRoute: true }}
-        name={routes.USER_PROFILE}
-        options={{
+        options={({ navigation }) => ({
           headerShown: true,
-          title: "My Profile",
-          tabBarIcon: tabAccountIcon,
-        }}
-      /> */}
-
-      {/* <Tab.Screen
-        component={TutorialsScreen}
-        name={routes.TUTORIALS}
-        options={{
-          tabBarIcon: tabTutorialsIcon,
-        }}
-      /> */}
+          title: "Events",
+          headerRight(props) {
+            return (
+              <TouchableOpacity
+                className="mr-4"
+                onPress={() => {
+                  navigation.push(routes.CREATE_EVENT);
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="plus"
+                  size={24}
+                  color={colors.primary}
+                />
+              </TouchableOpacity>
+            );
+          },
+        })}
+      />
       <Tab.Screen
         component={NotificationsScreen}
         name={routes.NOTIFICATIONS}
         options={{
+          tabBarIcon: tabNotificationsIcon,
+        }}
+      />
+      <Tab.Screen
+        component={ToolsScreen}
+        name={routes.TOOLS}
+        options={{
+          title: "Tools",
           tabBarIcon: tabNotificationsIcon,
         }}
       />

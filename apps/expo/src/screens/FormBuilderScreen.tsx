@@ -32,15 +32,15 @@ import routes from "../navigation/routes";
 import { toTitleCase } from "../utils/toTitleCase";
 import { UserTypeChoice } from ".prisma/client";
 
-export default function FindScribeScreen({
+export default function FormBuilderScreen({
   navigation,
   route,
 }: {
   navigation: NativeStackNavigationProp<
     AppNavigatorParamList,
-    routes.FIND_SCRIBE
+    routes.FORM_BUILDER
   >;
-  route: RouteProp<AppNavigatorParamList, routes.FIND_SCRIBE>;
+  route: RouteProp<AppNavigatorParamList, routes.FORM_BUILDER>;
 }) {
   const utils = trpc.useUtils();
 
