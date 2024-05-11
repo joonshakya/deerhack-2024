@@ -4,9 +4,11 @@
 
 Before running the project, ensure you have the following prerequisites installed and set up:
 
-1. **Node.js and npm**: Make sure you have Node.js and npm installed. If not, you can download and install them from [here](https://nodejs.org/).
+1. **Node.js and npm**: Make sure you have Node.js and npm installed. If not, you can download and install them.
 
-2. **PostgreSQL**: Ensure PostgreSQL is set up and running locally on port `5432`. If you haven't installed PostgreSQL yet, you can download and install it from [here](https://www.postgresql.org/download/).
+2. **PostgreSQL**: Ensure PostgreSQL is set up and running locally on port `5432`. If you haven't installed PostgreSQL yet, you can download and install it.
+
+2. **Python**: Make sure you have Python installed and set up. 
 
 ### Installation Steps
 
