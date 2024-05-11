@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
-import { Alert, TouchableHighlight, View } from "react-native";
+import { Alert, Linking, TouchableHighlight, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { RouteProp } from "@react-navigation/native";
 
+import { useAuthContext } from "~/auth/context";
 import useLocalAuthentication from "~/hooks/useLocalAuthentication";
+import { useAuthStore, useBearStore } from "~/store";
 import { trpc } from "~/utils/trpc";
+import { UserTypeChoice } from "../../../prisma-generated";
 import ActivityIndicator from "../components/ActivityIndicator";
 import AppButton from "../components/AppButton";
 import AppText from "../components/AppText";
@@ -21,7 +24,24 @@ export default function QrInfoScreen({
   const { id, invalidate } = route.params;
   const { authenticate } = useLocalAuthentication();
 
-  const { data, isLoading } = trpc.track.getDetails.useQuery({ id });
+  const { data, isLoading } = trpc.track.getFromResponseId.useQuery({
+    responseId: id,
+  });
+
+  const userRole = useBearStore((state) => state.userRole);
+
+  const { data: linkedIn } = trpc.response.getLinkedIn.useQuery(
+    { id },
+    {
+      enabled: userRole === "PARTICIPANT",
+    },
+  );
+
+  useEffect(() => {
+    if (linkedIn) {
+      Linking.openURL(linkedIn);
+    }
+  }, [linkedIn]);
 
   const { mutate: validateTrack } = trpc.track.validate.useMutation({
     onSuccess: () => {
@@ -42,7 +62,7 @@ export default function QrInfoScreen({
       <Screen noSafeArea className="flex-1 px-5">
         <View className="my-10 items-center">
           <AppText className="mb-8 text-3xl font-bold">
-            {data?.response.fullName}
+            {data?.response?.fullName}
           </AppText>
         </View>
         <View className="items-stretch overflow-hidden rounded-xl">

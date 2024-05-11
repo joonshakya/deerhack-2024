@@ -93,7 +93,8 @@ export const EventOrganizerRole: {
   LOGISTICS: 'LOGISTICS',
   MARKETING: 'MARKETING',
   SPONSORSHIP: 'SPONSORSHIP',
-  TECHNICAL: 'TECHNICAL'
+  TECHNICAL: 'TECHNICAL',
+  LEAD: 'LEAD'
 };
 
 export type EventOrganizerRole = (typeof EventOrganizerRole)[keyof typeof EventOrganizerRole]
@@ -4110,6 +4111,7 @@ export namespace Prisma {
     email: string | null
     phone: string | null
     eventId: string | null
+    linkedIn: string | null
     remarks: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -4121,6 +4123,7 @@ export namespace Prisma {
     email: string | null
     phone: string | null
     eventId: string | null
+    linkedIn: string | null
     remarks: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -4133,6 +4136,7 @@ export namespace Prisma {
     phone: number
     extraInfo: number
     eventId: number
+    linkedIn: number
     remarks: number
     createdAt: number
     updatedAt: number
@@ -4146,6 +4150,7 @@ export namespace Prisma {
     email?: true
     phone?: true
     eventId?: true
+    linkedIn?: true
     remarks?: true
     createdAt?: true
     updatedAt?: true
@@ -4157,6 +4162,7 @@ export namespace Prisma {
     email?: true
     phone?: true
     eventId?: true
+    linkedIn?: true
     remarks?: true
     createdAt?: true
     updatedAt?: true
@@ -4169,6 +4175,7 @@ export namespace Prisma {
     phone?: true
     extraInfo?: true
     eventId?: true
+    linkedIn?: true
     remarks?: true
     createdAt?: true
     updatedAt?: true
@@ -4254,6 +4261,7 @@ export namespace Prisma {
     phone: string
     extraInfo: JsonValue
     eventId: string
+    linkedIn: string | null
     remarks: string | null
     createdAt: Date
     updatedAt: Date
@@ -4283,6 +4291,7 @@ export namespace Prisma {
     phone?: boolean
     extraInfo?: boolean
     eventId?: boolean
+    linkedIn?: boolean
     remarks?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -4298,6 +4307,7 @@ export namespace Prisma {
     phone?: boolean
     extraInfo?: boolean
     eventId?: boolean
+    linkedIn?: boolean
     remarks?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -4323,6 +4333,7 @@ export namespace Prisma {
       phone: string
       extraInfo: Prisma.JsonValue
       eventId: string
+      linkedIn: string | null
       remarks: string | null
       createdAt: Date
       updatedAt: Date
@@ -4729,6 +4740,7 @@ export namespace Prisma {
     readonly phone: FieldRef<"Response", 'String'>
     readonly extraInfo: FieldRef<"Response", 'Json'>
     readonly eventId: FieldRef<"Response", 'String'>
+    readonly linkedIn: FieldRef<"Response", 'String'>
     readonly remarks: FieldRef<"Response", 'String'>
     readonly createdAt: FieldRef<"Response", 'DateTime'>
     readonly updatedAt: FieldRef<"Response", 'DateTime'>
@@ -10827,6 +10839,7 @@ export namespace Prisma {
     phone: 'phone',
     extraInfo: 'extraInfo',
     eventId: 'eventId',
+    linkedIn: 'linkedIn',
     remarks: 'remarks',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -11322,6 +11335,7 @@ export namespace Prisma {
     phone?: StringFilter<"Response"> | string
     extraInfo?: JsonFilter<"Response">
     eventId?: StringFilter<"Response"> | string
+    linkedIn?: StringNullableFilter<"Response"> | string | null
     remarks?: StringNullableFilter<"Response"> | string | null
     createdAt?: DateTimeFilter<"Response"> | Date | string
     updatedAt?: DateTimeFilter<"Response"> | Date | string
@@ -11336,6 +11350,7 @@ export namespace Prisma {
     phone?: SortOrder
     extraInfo?: SortOrder
     eventId?: SortOrder
+    linkedIn?: SortOrderInput | SortOrder
     remarks?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -11353,6 +11368,7 @@ export namespace Prisma {
     phone?: StringFilter<"Response"> | string
     extraInfo?: JsonFilter<"Response">
     eventId?: StringFilter<"Response"> | string
+    linkedIn?: StringNullableFilter<"Response"> | string | null
     remarks?: StringNullableFilter<"Response"> | string | null
     createdAt?: DateTimeFilter<"Response"> | Date | string
     updatedAt?: DateTimeFilter<"Response"> | Date | string
@@ -11367,6 +11383,7 @@ export namespace Prisma {
     phone?: SortOrder
     extraInfo?: SortOrder
     eventId?: SortOrder
+    linkedIn?: SortOrderInput | SortOrder
     remarks?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -11385,6 +11402,7 @@ export namespace Prisma {
     phone?: StringWithAggregatesFilter<"Response"> | string
     extraInfo?: JsonWithAggregatesFilter<"Response">
     eventId?: StringWithAggregatesFilter<"Response"> | string
+    linkedIn?: StringNullableWithAggregatesFilter<"Response"> | string | null
     remarks?: StringNullableWithAggregatesFilter<"Response"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Response"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Response"> | Date | string
@@ -12036,6 +12054,7 @@ export namespace Prisma {
     email: string
     phone: string
     extraInfo: JsonNullValueInput | InputJsonValue
+    linkedIn?: string | null
     remarks?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -12050,6 +12069,7 @@ export namespace Prisma {
     phone: string
     extraInfo: JsonNullValueInput | InputJsonValue
     eventId: string
+    linkedIn?: string | null
     remarks?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -12062,6 +12082,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
     extraInfo?: JsonNullValueInput | InputJsonValue
+    linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12076,6 +12097,7 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     extraInfo?: JsonNullValueInput | InputJsonValue
     eventId?: StringFieldUpdateOperationsInput | string
+    linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12089,6 +12111,7 @@ export namespace Prisma {
     phone: string
     extraInfo: JsonNullValueInput | InputJsonValue
     eventId: string
+    linkedIn?: string | null
     remarks?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -12100,6 +12123,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
     extraInfo?: JsonNullValueInput | InputJsonValue
+    linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12112,6 +12136,7 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     extraInfo?: JsonNullValueInput | InputJsonValue
     eventId?: StringFieldUpdateOperationsInput | string
+    linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12951,6 +12976,7 @@ export namespace Prisma {
     phone?: SortOrder
     extraInfo?: SortOrder
     eventId?: SortOrder
+    linkedIn?: SortOrder
     remarks?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -12962,6 +12988,7 @@ export namespace Prisma {
     email?: SortOrder
     phone?: SortOrder
     eventId?: SortOrder
+    linkedIn?: SortOrder
     remarks?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -12973,6 +13000,7 @@ export namespace Prisma {
     email?: SortOrder
     phone?: SortOrder
     eventId?: SortOrder
+    linkedIn?: SortOrder
     remarks?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -14599,6 +14627,7 @@ export namespace Prisma {
     email: string
     phone: string
     extraInfo: JsonNullValueInput | InputJsonValue
+    linkedIn?: string | null
     remarks?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -14611,6 +14640,7 @@ export namespace Prisma {
     email: string
     phone: string
     extraInfo: JsonNullValueInput | InputJsonValue
+    linkedIn?: string | null
     remarks?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -14752,6 +14782,7 @@ export namespace Prisma {
     phone?: StringFilter<"Response"> | string
     extraInfo?: JsonFilter<"Response">
     eventId?: StringFilter<"Response"> | string
+    linkedIn?: StringNullableFilter<"Response"> | string | null
     remarks?: StringNullableFilter<"Response"> | string | null
     createdAt?: DateTimeFilter<"Response"> | Date | string
     updatedAt?: DateTimeFilter<"Response"> | Date | string
@@ -15343,6 +15374,7 @@ export namespace Prisma {
     email: string
     phone: string
     extraInfo: JsonNullValueInput | InputJsonValue
+    linkedIn?: string | null
     remarks?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -15356,6 +15388,7 @@ export namespace Prisma {
     phone: string
     extraInfo: JsonNullValueInput | InputJsonValue
     eventId: string
+    linkedIn?: string | null
     remarks?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -15412,6 +15445,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
     extraInfo?: JsonNullValueInput | InputJsonValue
+    linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15425,6 +15459,7 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     extraInfo?: JsonNullValueInput | InputJsonValue
     eventId?: StringFieldUpdateOperationsInput | string
+    linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15990,6 +16025,7 @@ export namespace Prisma {
     email: string
     phone: string
     extraInfo: JsonNullValueInput | InputJsonValue
+    linkedIn?: string | null
     remarks?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16018,6 +16054,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
     extraInfo?: JsonNullValueInput | InputJsonValue
+    linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16030,6 +16067,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
     extraInfo?: JsonNullValueInput | InputJsonValue
+    linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16042,6 +16080,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
     extraInfo?: JsonNullValueInput | InputJsonValue
+    linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

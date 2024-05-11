@@ -21,6 +21,9 @@ export default function SettingsScreen({
 }) {
   const [logoutLoading, setLogoutLoading] = useState(false);
 
+  const userRole = useBearStore((state) => state.userRole);
+  const setUserRole = useBearStore((state) => state.setUserRole);
+
   const { logout } = useAuthContext();
 
   return (
@@ -34,6 +37,36 @@ export default function SettingsScreen({
                 title: "Version",
                 subTitle: "1.2.1",
                 // onPress: () => navigation.navigate(routes.ABOUT),
+              },
+            ],
+          },
+          {
+            name: "Role",
+            options: [
+              {
+                dropdown: true,
+                title: "View as:",
+                subTitle: (
+                  <AppListMenuPicker
+                    label="View as:"
+                    noPlaceholder
+                    className="flex-1"
+                    items={[
+                      {
+                        value: "ORGANIZER",
+                        label: "Organizer",
+                      },
+                      {
+                        value: "PARTICIPANT",
+                        label: "Participant",
+                      },
+                    ]}
+                    onItemSelect={(item) => {
+                      setUserRole(item.value);
+                    }}
+                    selectedItem={userRole}
+                  />
+                ),
               },
             ],
           },

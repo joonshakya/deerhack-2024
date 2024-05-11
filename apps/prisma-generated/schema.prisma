@@ -59,6 +59,7 @@ model Response {
   extraInfo Json
   event     Event            @relation("FormResponse", fields: [eventId], references: [id], onDelete: Cascade)
   eventId   String
+  linkedIn  String?
   remarks   String?
   tracks    TrackingDetail[] @relation("TrackResponse")
   createdAt DateTime         @default(now())
@@ -162,6 +163,7 @@ enum EventOrganizerRole {
   MARKETING
   SPONSORSHIP
   TECHNICAL
+  LEAD
 }
 
 enum DayChoice {

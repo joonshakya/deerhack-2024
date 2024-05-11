@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Button, Platform } from "react-native";
 import {
   createNativeStackNavigator,
@@ -8,6 +9,7 @@ import EventCreateScreen from "~/screens/EventCreateScreen";
 import FindScribeScreen from "~/screens/FormBuilderScreen";
 import NotificationsScreen from "~/screens/NotificationsScreen";
 import QrInfoScreen from "~/screens/QrInfoScreen";
+import { useBearStore } from "~/store";
 import { animation } from "../config/animation";
 import defaultStyles from "../config/styles";
 import HomeScreen from "../screens/HomeScreen";
@@ -47,6 +49,12 @@ export type AppNavigatorParamList = HomeTabParamList &
   MultipleScreensParamList;
 
 export default function AppNavigator() {
+  const setUserRole = useBearStore((state) => state.setUserRole);
+
+  useEffect(() => {
+    setUserRole("ORGANIZER");
+  }, []);
+
   const Stack = createNativeStackNavigator<AppNavigatorParamList>();
 
   return (

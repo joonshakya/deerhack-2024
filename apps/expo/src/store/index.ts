@@ -10,6 +10,8 @@ interface BearState {
   setLoadingVisible: (loadingVisible: boolean) => void;
   initialLoaded: boolean;
   setInitialLoaded: (initialLoaded: boolean) => void;
+  userRole: string;
+  setUserRole: (userRole: string) => void;
 }
 
 export const useBearStore = create<BearState>()((set) => ({
@@ -21,6 +23,8 @@ export const useBearStore = create<BearState>()((set) => ({
   setLoadingVisible: (loadingVisible) => set({ loadingVisible }),
   initialLoaded: false,
   setInitialLoaded: (initialLoaded) => set({ initialLoaded }),
+  userRole: "ORGANIZER",
+  setUserRole: (userRole) => set({ userRole }),
 }));
 
 interface AuthStore {

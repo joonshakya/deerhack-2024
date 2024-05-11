@@ -12,6 +12,7 @@ import { Audio } from "expo-av";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
+import { trpc } from "~/utils/trpc";
 import { navigate } from "../navigation/routeNavigation";
 import routes from "../navigation/routes";
 import AppText from "./AppText";
@@ -26,6 +27,21 @@ export function QrScanner({
   const [sound, setSound] = useState<Audio.Sound>();
   const [modalOpenDelay, setModalOpenDelay] = useState(false);
   const [permission, requestPermission] = useCameraPermissions();
+
+  const { data } = trpc.event.list.useQuery();
+
+  const { mutate } = trpc.response.create.useMutation({});
+
+  useEffect(() => {
+    mutate({
+      email: "joonshakya07@gmail.com",
+      fullName: "Joon Shakya",
+      linkedIn: "https://www.linkedin.com/in/joon-shakya-7b1b3b1b3/",
+      phone: "9841234567",
+      eventId: "clw1tvn2n0006kmnibe18su2a",
+      message: "Hello World",
+    });
+  }, []);
 
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   useEffect(() => {

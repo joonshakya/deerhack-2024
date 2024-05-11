@@ -146,6 +146,7 @@ exports.Prisma.ResponseScalarFieldEnum = {
   phone: 'phone',
   extraInfo: 'extraInfo',
   eventId: 'eventId',
+  linkedIn: 'linkedIn',
   remarks: 'remarks',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -252,7 +253,8 @@ exports.EventOrganizerRole = exports.$Enums.EventOrganizerRole = {
   LOGISTICS: 'LOGISTICS',
   MARKETING: 'MARKETING',
   SPONSORSHIP: 'SPONSORSHIP',
-  TECHNICAL: 'TECHNICAL'
+  TECHNICAL: 'TECHNICAL',
+  LEAD: 'LEAD'
 };
 
 exports.NotificationDataTypeChoice = exports.$Enums.NotificationDataTypeChoice = {
