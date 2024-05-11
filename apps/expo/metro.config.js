@@ -16,11 +16,36 @@ if (config.resolver) {
     path.resolve(projectRoot, "node_modules"),
     path.resolve(workspaceRoot, "node_modules"),
   ];
-  config.resolver.alias = {
-    "react-native-maps": "@preflower/react-native-web-maps",
-  };
   // 3. Force Metro to resolve (sub)dependencies only from the `nodeModulesPaths`
   config.resolver.disableHierarchicalLookup = true;
+
+  // add resolver: {
+  //   sourceExts: ['js', 'jsx', 'json', 'ts', 'tsx', 'cjs', 'mjs'],
+  //   assetExts: ['glb', 'gltf', 'png', 'jpg'],
+  // },
+  // to the config object
+
+  config.resolver.sourceExts = [
+    "js",
+    "jsx",
+    "json",
+    "ts",
+    "tsx",
+    "cjs",
+    "mjs",
+    "svg",
+  ];
+  config.resolver.assetExts = [
+    "glb",
+    "gltf",
+    "png",
+    "jpg",
+    "jpeg",
+    "svg",
+    "mp3",
+    "stl",
+    "ttf",
+  ];
 }
 
 module.exports = config;

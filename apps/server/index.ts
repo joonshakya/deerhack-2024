@@ -1,4 +1,3 @@
-import cors from "@fastify/cors";
 import ws from "@fastify/websocket";
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
@@ -10,18 +9,26 @@ import type { AppRouter } from "./src/router";
 
 export type { AppRouter } from "./src/router";
 
+/**
+ * Inference helpers for input types
+ * @example type HelloInput = RouterInputs['example']['hello']
+ **/
 export type RouterInputs = inferRouterInputs<AppRouter>;
+
+/**
+ * Inference helpers for output types
+ * @example type HelloOutput = RouterOutputs['example']['hello']
+ **/
 export type RouterOutputs = inferRouterOutputs<AppRouter>;
 
 // const dev = process.env.NODE_ENV !== "production";
 const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 4000;
 const prefix = "/";
-const server = fastify({ logger: false });
+const server = fastify({
+  logger: false,
+});
 
 void server.register(ws);
-void server.register(cors, {
-  origin: "*",
-});
 void server.register(fastifyTRPCPlugin, {
   prefix,
   useWSS: true,
@@ -37,9 +44,6 @@ const start = async () => {
     console.log(`tRPC server running at http://localhost:${port}`);
   } catch (err) {
     server.log.error(err);
-    if (err instanceof Error) {
-      console.log(err.message);
-    }
     process.exit(1);
   }
 };

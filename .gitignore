@@ -16,6 +16,7 @@ next-env.d.ts
 # expo
 .expo/
 dist/
+apps/expo/.gitignore
 
 # production
 build
@@ -31,7 +32,7 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # local env files
-# .env
+.env
 .env*.local
 
 # vercel
@@ -45,3 +46,5 @@ yarn-error.log*
 
 # sqlite database file
 *.sqlite
+
+/apps/expo/android

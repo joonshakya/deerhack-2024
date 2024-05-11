@@ -1,29 +1,39 @@
 {
   "cli": {
-    "version": ">= 4.1.2"
+    "version": ">= 3.3.0"
   },
   "build": {
     "base": {
-      "node": "20.21.2",
-      "pnpm": "8.15.8",
+      "node": "20.9.0",
+      "pnpm": "9.0.6",
       "ios": {
         "resourceClass": "m-medium"
+      },
+      "channel": "base",
+      "env": {
+        "EXPO_USE_METRO_WORKSPACE_ROOT": "true"
       }
     },
     "development": {
       "extends": "base",
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "channel": "development"
     },
     "preview": {
       "extends": "base",
       "distribution": "internal",
       "ios": {
         "simulator": true
-      }
+      },
+      "channel": "preview"
     },
     "production": {
-      "extends": "base"
+      "extends": "base",
+      "channel": "production",
+      "android": {
+        "buildType": "apk"
+      }
     }
   },
   "submit": {

@@ -1,19 +1,12 @@
-import { TRPCError } from "@trpc/server";
-
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
-import { chatRouter } from "./chat";
-import { notificationRouter } from "./notification";
-import { userRouter } from "./user";
+import { createTRPCRouter } from "../trpc";
+import { eventRouter } from "./event";
+import { notificationRotuer } from "./notification";
+import { userRotuer } from "./user";
 
 export const appRouter = createTRPCRouter({
-  user: userRouter,
-  chat: chatRouter,
-
-  notification: notificationRouter,
-
-  healthCheck: publicProcedure.query(() => {
-    return "Hello from tRPC";
-  }),
+  user: userRotuer,
+  notification: notificationRotuer,
+  event: eventRouter,
 });
 
 export type AppRouter = typeof appRouter;

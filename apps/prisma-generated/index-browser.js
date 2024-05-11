@@ -122,6 +122,63 @@ exports.Prisma.UserScalarFieldEnum = {
   notificationIds: 'notificationIds'
 };
 
+exports.Prisma.EventScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  category: 'category',
+  image: 'image',
+  date: 'date',
+  time: 'time',
+  venue: 'venue',
+  paymentScreenshotNeeded: 'paymentScreenshotNeeded',
+  registrationRequirements: 'registrationRequirements',
+  registrationPrice: 'registrationPrice',
+  leadId: 'leadId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ResponseScalarFieldEnum = {
+  id: 'id',
+  fullName: 'fullName',
+  email: 'email',
+  phone: 'phone',
+  extraInfo: 'extraInfo',
+  eventId: 'eventId',
+  remarks: 'remarks',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.EventOrganizerScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  role: 'role',
+  remarks: 'remarks',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TrackScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  eventId: 'eventId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TrackingDetailScalarFieldEnum = {
+  id: 'id',
+  trackId: 'trackId',
+  responseId: 'responseId',
+  scannedAt: 'scannedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.ChatScalarFieldEnum = {
   id: 'id',
   read: 'read',
@@ -155,6 +212,10 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
+};
+
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -164,13 +225,34 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
 exports.UserTypeChoice = exports.$Enums.UserTypeChoice = {
-  CUSTOMER: 'CUSTOMER',
-  ADMIN: 'ADMIN'
+  ADMIN: 'ADMIN',
+  CUSTOMER: 'CUSTOMER'
 };
 
 exports.NotificationTypeChoice = exports.$Enums.NotificationTypeChoice = {
   USER_CREATED: 'USER_CREATED'
+};
+
+exports.Category = exports.$Enums.Category = {
+  MUSIC: 'MUSIC',
+  HACKATHON: 'HACKATHON',
+  COMMUNITY: 'COMMUNITY',
+  SPORTS: 'SPORTS',
+  EDUCATION: 'EDUCATION'
+};
+
+exports.EventOrganizerRole = exports.$Enums.EventOrganizerRole = {
+  LOGISTICS: 'LOGISTICS',
+  MARKETING: 'MARKETING',
+  SPONSORSHIP: 'SPONSORSHIP',
+  TECHNICAL: 'TECHNICAL'
 };
 
 exports.NotificationDataTypeChoice = exports.$Enums.NotificationDataTypeChoice = {
@@ -179,6 +261,11 @@ exports.NotificationDataTypeChoice = exports.$Enums.NotificationDataTypeChoice =
 
 exports.Prisma.ModelName = {
   User: 'User',
+  Event: 'Event',
+  Response: 'Response',
+  EventOrganizer: 'EventOrganizer',
+  Track: 'Track',
+  TrackingDetail: 'TrackingDetail',
   Chat: 'Chat',
   Message: 'Message',
   Notification: 'Notification'

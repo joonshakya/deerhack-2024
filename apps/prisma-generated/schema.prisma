@@ -23,6 +23,84 @@ model User {
   updatedAt             DateTime                 @updatedAt
   notifications         Notification[]
   notificationIds       String[]                 @default([])
+  events                Event[]                  @relation("EventLead")
+  volunteerEvents       EventOrganizer[]         @relation("EventOrganizerUser")
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  category    Category
+  image       String
+  date        DateTime
+  time        String
+  venue       String
+
+  paymentScreenshotNeeded  Boolean
+  registrationRequirements String[]
+  formResponses            Response[] @relation("FormResponse")
+
+  tracks Track[] @relation("EventTrack")
+
+  registrationPrice Float
+  lead              User             @relation("EventLead", fields: [leadId], references: [id], onDelete: Cascade)
+  leadId            String
+  organizers        EventOrganizer[] @relation("EventOrganizerEvent")
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+}
+
+model Response {
+  id        String           @id @default(uuid())
+  fullName  String
+  email     String
+  phone     String
+  extraInfo Json
+  event     Event            @relation("FormResponse", fields: [eventId], references: [id], onDelete: Cascade)
+  eventId   String
+  remarks   String?
+  tracks    TrackingDetail[] @relation("TrackResponse")
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+}
+
+model EventOrganizer {
+  id        String             @id @default(cuid())
+  event     Event              @relation("EventOrganizerEvent", fields: [eventId], references: [id], onDelete: Cascade)
+  eventId   String
+  role      EventOrganizerRole
+  remarks   String?
+  user      User               @relation("EventOrganizerUser", fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+}
+
+model Track {
+  id              String           @id @default(cuid())
+  title           String
+  description     String
+  event           Event            @relation("EventTrack", fields: [eventId], references: [id], onDelete: Cascade)
+  eventId         String
+  trackingDetails TrackingDetail[] @relation("TrackDetail")
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+}
+
+model TrackingDetail {
+  id String @id @default(cuid())
+
+  track   Track  @relation("TrackDetail", fields: [trackId], references: [id], onDelete: Cascade)
+  trackId String
+
+  response   Response @relation("TrackResponse", fields: [responseId], references: [id], onDelete: Cascade)
+  responseId String
+
+  scannedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Chat {
@@ -67,8 +145,23 @@ enum NotificationTypeChoice {
 }
 
 enum UserTypeChoice {
-  CUSTOMER
   ADMIN
+  CUSTOMER
+}
+
+enum Category {
+  MUSIC
+  HACKATHON
+  COMMUNITY
+  SPORTS
+  EDUCATION
+}
+
+enum EventOrganizerRole {
+  LOGISTICS
+  MARKETING
+  SPONSORSHIP
+  TECHNICAL
 }
 
 enum DayChoice {

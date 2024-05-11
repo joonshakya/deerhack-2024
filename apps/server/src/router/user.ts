@@ -1,5 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import bcrypt from "bcrypt";
+import { OAuth2Client } from "google-auth-library";
 import { z } from "zod";
 
 // import type { Authedctx, ctx } from "../ctx";
@@ -8,6 +9,7 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import validatePassword from "../utils/validatePassword";
 import { Prisma, UserTypeChoice } from ".prisma/client";
 
+const oAuth2Client = new OAuth2Client();
 // import { User } from ".prisma/client";
 
 const loginData = {
@@ -15,17 +17,17 @@ const loginData = {
   disabledNotifications: true,
   email: true,
   type: true,
-  emailVerified: true,
   fullName: true,
+  phone: true,
+  about: true,
   _count: {
     select: {
       notifications: true,
     },
   },
-  about: true,
 };
 
-export const userRouter = createTRPCRouter({
+export const userRotuer = createTRPCRouter({
   me: publicProcedure.query(async ({ ctx }) => {
     if (!ctx.user) {
       return null;
@@ -46,6 +48,7 @@ export const userRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const e = "Invalid email or password";
+      console.log("first");
       const user = await ctx.prisma.user.findUnique({
         where: {
           email: input.email,
@@ -67,6 +70,14 @@ export const userRouter = createTRPCRouter({
       }
       const { noOfPasswordsChanged, password, ...returnUser } = user;
 
+      if (!password) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message:
+            "It seems like you had previously logged in with Google. Please try logging in with Google again.",
+        });
+      }
+
       const passwordIsValid = await bcrypt.compare(input.password, password);
 
       if (!passwordIsValid) {
@@ -83,154 +94,127 @@ export const userRouter = createTRPCRouter({
         token,
       };
     }),
-  create: protectedProcedure
+  register: publicProcedure
     .input(
       z.object({
-        userId: z.string().optional(),
         fullName: z.string(),
-        email: z.string(),
-        password: z.string().optional(),
-        confirmPassword: z.string().optional(),
         phone: z.string(),
+        email: z.string(),
+        password: z.string(),
+        confirmPassword: z.string().optional(),
         type: z.nativeEnum(UserTypeChoice),
-        about: z.string().nullish(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      if (ctx.user.type !== UserTypeChoice.ADMIN) {
+      if (input.password != input.confirmPassword) {
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: "Only admins can create users",
+          message: "Passwords do not match",
         });
       }
-      if (input.type === UserTypeChoice.ADMIN) {
+      const passwordError = validatePassword(input.password);
+      if (passwordError) {
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: "Cannot create admin",
+          message: passwordError,
         });
       }
 
-      if (!input.userId) {
-        if (!input.password || !input.confirmPassword) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Password is required",
-          });
-        }
-        if (input.password !== input.confirmPassword) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Passwords do not match",
-          });
-        }
-        const passwordError = validatePassword(input.password);
-        if (passwordError) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: passwordError,
-          });
-        }
-        const salt = await bcrypt.genSalt(10);
-        const hash = bcrypt.hashSync(input.password, salt);
-        delete input.confirmPassword;
-
-        try {
-          await ctx.prisma.user.create({
-            data: {
-              ...input,
-              password: hash,
-              noOfPasswordsChanged: 0,
-            },
-            select: loginData,
-          });
-        } catch (e) {
-          if (e instanceof Prisma.PrismaClientKnownRequestError) {
-            if (e.code === "P2002") {
-              const error =
-                e.meta && Array.isArray(e.meta.target)
-                  ? `A user with this ${e.meta.target[0]} already exists.`
-                  : "A user must be unique.";
-              console.log(e);
-              throw new TRPCError({
-                code: "BAD_REQUEST",
-                message: error,
-              });
-            } else {
-              console.log(e);
-              throw e;
-            }
-          }
-          throw e;
-        }
-        return true;
-      }
-      const userId = input.userId;
-      delete input.userId;
       delete input.confirmPassword;
-      delete input.password;
+      const salt = await bcrypt.genSalt(10);
+      const hash = bcrypt.hashSync(input.password, salt);
+      input.password = hash;
 
-      await ctx.prisma.user.update({
-        where: {
-          id: userId,
-        },
-        data: {
-          ...input,
-        },
-        select: loginData,
-      });
-      return true;
+      try {
+        return await ctx.prisma.user.create({
+          data: {
+            ...input,
+            noOfPasswordsChanged: 1,
+          },
+        });
+      } catch (e) {
+        if (e instanceof Prisma.PrismaClientKnownRequestError) {
+          if (e.code === "P2002") {
+            const error =
+              e.meta && Array.isArray(e.meta.target)
+                ? `A user with this ${e.meta.target[0]} already exists.`
+                : "A user must be unique.";
+            console.log(e);
+            throw new TRPCError({
+              code: "BAD_REQUEST",
+              message: error,
+            });
+          } else {
+            console.log(e);
+            throw e;
+          }
+        }
+        console.log(e);
+        throw e;
+      }
     }),
-  list: protectedProcedure
+  resetPassword: publicProcedure
     .input(
       z.object({
-        keyword: z.string().optional(),
-        type: z.nativeEnum(UserTypeChoice).optional(),
+        email: z.string(),
+        password: z.string(),
+        confirmPassword: z.string(),
       }),
     )
-    .query(async ({ ctx, input }) => {
-      if (
-        ctx.user.type !== UserTypeChoice.ADMIN &&
-        input.type !== ctx.user.type
-      ) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "You are not allowed to access this resource",
-        });
-      }
-      return ctx.prisma.user.findMany({
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.prisma.user.findUnique({
         where: {
-          type: input.type,
-          OR: [
-            {
-              fullName: {
-                contains: input.keyword,
-                mode: "insensitive",
-              },
-            },
-            {
-              email: {
-                contains: input.keyword,
-                mode: "insensitive",
-              },
-            },
-            {
-              phone: {
-                contains: input.keyword,
-                mode: "insensitive",
-              },
-            },
-          ],
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-        select: {
-          id: true,
-          fullName: true,
-          type: true,
-          phone: true,
+          email: input.email,
         },
       });
+
+      if (!user) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "No user with this email was found",
+        });
+      }
+
+      if (input.password != input.confirmPassword) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Passwords do not match",
+        });
+      }
+
+      const passwordError = validatePassword(input.password);
+      if (passwordError) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: passwordError,
+        });
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      const hash = bcrypt.hashSync(input.password, salt);
+
+      const { noOfPasswordsChanged, ...returnUser } =
+        await ctx.prisma.user.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            password: hash,
+            noOfPasswordsChanged: {
+              increment: 1,
+            },
+          },
+          select: {
+            ...loginData,
+            // for logic
+            noOfPasswordsChanged: true,
+          },
+        });
+
+      const token = signJwt({ id: user.id, noOfPasswordsChanged });
+
+      // return the jwt
+      return { user: returnUser, token };
     }),
   setNoificationId: protectedProcedure
     .input(
@@ -241,12 +225,12 @@ export const userRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       await ctx.prisma.user.update({
         where: {
-          id: ctx.user!.id,
+          id: ctx.user.id,
         },
         data: {
           notificationIds: [
             ...new Set([
-              ...(ctx.user!.notificationIds || []),
+              ...(ctx.user.notificationIds || []),
               input.notificationId,
             ]),
           ],
@@ -263,7 +247,7 @@ export const userRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       await ctx.prisma.user.update({
         where: {
-          id: ctx.user!.id,
+          id: ctx.user.id,
         },
         data: {
           notificationIds: ctx.user.notificationIds.filter(
@@ -273,26 +257,29 @@ export const userRouter = createTRPCRouter({
       });
       return true;
     }),
-  getBasicInfo: protectedProcedure
-    .input(
-      z.object({
-        userId: z.string(),
-      }),
-    )
-    .query(async ({ ctx, input }) => {
-      return ctx.prisma.user.findUnique({
-        where: {
-          id: input.userId,
-        },
-        select: {
-          id: true,
-          fullName: true,
-          email: true,
-          password: true,
-          phone: true,
-          type: true,
-          about: true,
-        },
-      });
-    }),
 });
+
+async function verifyOAuthToken(idToken: string) {
+  try {
+    const ticket = await oAuth2Client.verifyIdToken({
+      idToken,
+      audience: [
+        process.env.IOS_GOOGLE_CLIENT_ID || "",
+        process.env.ANDROID_GOOGLE_CLIENT_ID || "",
+      ],
+    });
+    const payload = ticket.getPayload();
+    if (!payload) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Invalid token",
+      });
+    }
+    return payload;
+  } catch (e) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Invalid token",
+    });
+  }
+}
