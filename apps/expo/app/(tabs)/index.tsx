@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Image, StyleSheet } from "react-native";
 import EditScreenInfo from "@/components/EditScreenInfo";
 import { Text, View } from "@/components/Themed";
 import { trpc } from "@/utils/trpc";
@@ -10,6 +10,7 @@ export default function TabOneScreen() {
     <View className="bg-red" style={styles.container}>
       <Text style={styles.title}>Tab One</Text>
       <Text style={styles.title}>{healthCheck}</Text>
+      <Image source={{ uri: "https://www.joonshakya.com.np/Joon.jpg" }} />
       <View
         style={styles.separator}
         lightColor="#eee"

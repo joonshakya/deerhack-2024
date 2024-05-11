@@ -24,7 +24,6 @@
     "@trpc/server": "^10.43.0",
     "@types/nodemailer": "^6.4.13",
     "bcrypt": "^5.1.1",
-    "canvas": "^2.11.2",
     "expo-server-sdk": "^3.7.0",
     "fastify": "^4.24.3",
     "jsonwebtoken": "^9.0.2",
