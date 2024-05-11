@@ -2,8 +2,11 @@ import { useCallback, useRef, useState } from "react";
 import { Alert, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useFocusEffect } from "@react-navigation/native";
+import { RouteProp, useFocusEffect } from "@react-navigation/native";
 
+import { AppNavigatorParamList } from "~/navigation/AppNavigator";
+import { HomeTabNavigatorParamList } from "~/navigation/HomeTabNavigator";
+import { trpc } from "~/utils/trpc";
 import AppText from "../components/AppText";
 import { QrScanner } from "../components/QrScanner";
 import Screen from "../components/Screen";
@@ -11,7 +14,21 @@ import SquareItem from "../components/SquareItem";
 import { navigate } from "../navigation/routeNavigation";
 import routes from "../navigation/routes";
 
-export default function ToolsScreen() {
+export default function ToolsScreen({
+  route,
+}: {
+  route: RouteProp<
+    AppNavigatorParamList | HomeTabNavigatorParamList,
+    routes.TOOLS
+  >;
+}) {
+  const { categoryId } = route.params || {
+    categoryId: undefined,
+  };
+
+  const { data: categoryData, isLoading: categoryLoading } =
+    trpc.track.getCategory.useQuery({ id: categoryId || "" });
+
   const [modalOpen, setModalOpen] = useState(false);
 
   useFocusEffect(
@@ -19,10 +36,11 @@ export default function ToolsScreen() {
       setModalOpen(true);
     }, []),
   );
+
   return (
     <Screen noSafeArea className="px-5">
       <AppText bigText className="my-5 font-bold">
-        Tools
+        {categoryData?.title || "Tools"}
       </AppText>
       <View className="flex-row flex-wrap justify-between">
         {[
@@ -33,24 +51,6 @@ export default function ToolsScreen() {
             },
             iconName: "qrcode-scan",
           },
-          {
-            name: "Enter Ticker Code",
-            onPress: async () => {
-              Alert.prompt(
-                "Enter Ticker Code",
-                "Enter the code of your ticket",
-                async (ticketId) => {
-                  if (ticketId) {
-                    navigate(routes.QR_INFO, {
-                      ticketId,
-                      invalidate: true,
-                    });
-                  }
-                },
-              );
-            },
-            iconName: "keyboard",
-          },
         ].map(({ name, onPress, iconName }) => (
           <SquareItem
             key={name}
@@ -60,7 +60,11 @@ export default function ToolsScreen() {
           />
         ))}
       </View>
-      <QrScanner modalOpen={modalOpen} setModalOpen={setModalOpen} />
+      <QrScanner
+        categoryId={categoryId}
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+      />
     </Screen>
   );
 }

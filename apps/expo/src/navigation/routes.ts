@@ -12,6 +12,7 @@ enum routes {
   TOOLS = "Tools",
   QR_SCANNER = "QrScanner",
   QR_INFO = "QrInfo",
+  EVENT_CATEGORIES = "EventCategories",
 }
 
 export default routes;

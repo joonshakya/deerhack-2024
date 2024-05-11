@@ -5,6 +5,7 @@ import { colors } from "tailwind.config";
 
 import useNotifications from "~/hooks/useNotifications";
 import ToolsScreen from "~/screens/ToolsScreen";
+import { useBearStore } from "~/store";
 import defaultStyles from "../config/styles";
 // import TutorialsScreen from "../screens/TutorialsScreen";
 import HomeScreen from "../screens/HomeScreen";
@@ -41,6 +42,8 @@ export default function HomeTabNavigator() {
   const Tab = createBottomTabNavigator<HomeTabNavigatorParamList>();
   useNotifications();
 
+  const userRole = useBearStore((state) => state.userRole);
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -48,43 +51,55 @@ export default function HomeTabNavigator() {
         headerShown: true,
       }}
     >
-      <Tab.Screen
-        component={HomeScreen}
-        name={routes.HOME}
-        options={({ navigation }) => ({
-          headerShown: true,
-          title: "Events",
-          headerRight(props) {
-            return (
-              <TouchableOpacity
-                className="mr-4"
-                onPress={() => {
-                  navigation.push(routes.CREATE_EVENT);
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="plus"
-                  size={24}
-                  color={colors.primary}
-                />
-              </TouchableOpacity>
-            );
-          },
-        })}
-      />
-      <Tab.Screen
+      {userRole === "ORGANIZER" && (
+        <Tab.Screen
+          component={HomeScreen}
+          name={routes.HOME}
+          options={({ navigation }) => ({
+            headerShown: true,
+            title: "Events",
+            tabBarIcon: ({ color, size }: { color: string; size: number }) => (
+              <MaterialCommunityIcons color={color} name="home" size={size} />
+            ),
+            headerRight(props) {
+              return (
+                <TouchableOpacity
+                  className="mr-4"
+                  onPress={() => {
+                    navigation.push(routes.CREATE_EVENT);
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    name="plus"
+                    size={24}
+                    color={colors.primary}
+                  />
+                </TouchableOpacity>
+              );
+            },
+          })}
+        />
+      )}
+
+      {/* <Tab.Screen
         component={NotificationsScreen}
         name={routes.NOTIFICATIONS}
         options={{
           tabBarIcon: tabNotificationsIcon,
         }}
-      />
+      /> */}
       <Tab.Screen
         component={ToolsScreen}
         name={routes.TOOLS}
         options={{
-          title: "Tools",
-          tabBarIcon: tabNotificationsIcon,
+          title: "QR Scanner",
+          tabBarIcon: ({ color, size }: { color: string; size: number }) => (
+            <MaterialCommunityIcons
+              color={color}
+              name="qrcode-scan"
+              size={size}
+            />
+          ),
         }}
       />
       <Tab.Screen

@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
-import { Alert, Linking, TouchableHighlight, View } from "react-native";
+import {
+  Alert,
+  Linking,
+  Pressable,
+  TouchableHighlight,
+  View,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { RouteProp } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import { useAuthContext } from "~/auth/context";
 import useLocalAuthentication from "~/hooks/useLocalAuthentication";
@@ -18,15 +25,38 @@ import routes from "../navigation/routes";
 
 export default function QrInfoScreen({
   route,
+  navigation,
 }: {
   route: RouteProp<AppNavigatorParamList, routes.QR_INFO>;
+  navigation: NativeStackNavigationProp<AppNavigatorParamList, routes.QR_INFO>;
 }) {
-  const { id, invalidate } = route.params;
+  const { id, invalidate, categoryId } = route.params;
   const { authenticate } = useLocalAuthentication();
 
-  const { data, isLoading } = trpc.track.getFromResponseId.useQuery({
-    responseId: id,
-  });
+  const { data, isLoading } = trpc.track.getFromResponseId.useQuery(
+    {
+      responseId: id,
+      categoryId,
+    },
+    {
+      enabled: !!categoryId,
+    },
+  );
+  const { data: response, isLoading: responseLoading } =
+    trpc.response.get.useQuery({
+      id,
+    });
+
+  const { mutate: invalidateQr } = trpc.track.invalidate.useMutation({});
+
+  useEffect(() => {
+    if (data) {
+      invalidateQr({
+        categoryId,
+        responseId: data.responseId,
+      });
+    }
+  }, [data]);
 
   const userRole = useBearStore((state) => state.userRole);
 
@@ -38,10 +68,10 @@ export default function QrInfoScreen({
   );
 
   useEffect(() => {
-    if (linkedIn) {
+    if (linkedIn && userRole === "PARTICIPANT") {
       Linking.openURL(linkedIn);
     }
-  }, [linkedIn]);
+  }, [linkedIn, userRole]);
 
   const { mutate: validateTrack } = trpc.track.validate.useMutation({
     onSuccess: () => {
@@ -56,7 +86,7 @@ export default function QrInfoScreen({
     },
   });
 
-  return (
+  return !!categoryId ? (
     <>
       <ActivityIndicator visible={isLoading} />
       <Screen noSafeArea className="flex-1 px-5">
@@ -101,6 +131,30 @@ export default function QrInfoScreen({
           />
         </View>
       ) : null}
+    </>
+  ) : (
+    <>
+      <ActivityIndicator visible={responseLoading} />
+      <Screen noSafeArea className="flex-1 px-5">
+        <View className="my-10 items-center">
+          <AppText className="mb-8 text-3xl font-bold">
+            {response?.fullName}
+          </AppText>
+        </View>
+        <View>
+          <AppText className="text-2xl font-bold">{response?.email}</AppText>
+          <AppText className="text-2xl font-bold">{response?.phone}</AppText>
+          <Pressable
+            onPress={() => {
+              response?.linkedIn && Linking.openURL(response?.linkedIn);
+            }}
+          >
+            <AppText className="text-2xl font-bold text-blue-500">
+              LinkedIn
+            </AppText>
+          </Pressable>
+        </View>
+      </Screen>
     </>
   );
 }

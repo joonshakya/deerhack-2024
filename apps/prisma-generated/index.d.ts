@@ -11566,6 +11566,7 @@ export namespace Prisma {
 
   export type TrackingDetailWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    trackId_responseId?: TrackingDetailTrackIdResponseIdCompoundUniqueInput
     AND?: TrackingDetailWhereInput | TrackingDetailWhereInput[]
     OR?: TrackingDetailWhereInput[]
     NOT?: TrackingDetailWhereInput | TrackingDetailWhereInput[]
@@ -11576,7 +11577,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"TrackingDetail"> | Date | string
     track?: XOR<TrackRelationFilter, TrackWhereInput>
     response?: XOR<ResponseRelationFilter, ResponseWhereInput>
-  }, "id">
+  }, "id" | "trackId_responseId">
 
   export type TrackingDetailOrderByWithAggregationInput = {
     id?: SortOrder
@@ -13124,6 +13125,11 @@ export namespace Prisma {
   export type ResponseRelationFilter = {
     is?: ResponseWhereInput
     isNot?: ResponseWhereInput
+  }
+
+  export type TrackingDetailTrackIdResponseIdCompoundUniqueInput = {
+    trackId: string
+    responseId: string
   }
 
   export type TrackingDetailCountOrderByAggregateInput = {

@@ -112,7 +112,7 @@ function Services({
             key={id}
             accessibilityRole="button"
             onPress={() => {
-              navigation.navigate(routes.CREATE_EVENT, {
+              navigation.navigate(routes.EVENT_CATEGORIES, {
                 eventId: id,
               });
             }}
@@ -123,7 +123,7 @@ function Services({
                 <Image
                   className="h-[180] w-full rounded-xl"
                   source={{
-                    uri: "https://www.joon.com.np/Joon.png",
+                    uri: image || "https://www.joon.com.np/Joon.png",
                   }}
                   height={10}
                   width={10}

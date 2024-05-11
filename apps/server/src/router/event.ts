@@ -40,4 +40,40 @@ export const eventRouter = createTRPCRouter({
         },
       });
     }),
+  getTracks: protectedProcedure
+    .input(
+      z.object({
+        eventId: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      return ctx.prisma.track.findMany({
+        where: {
+          eventId: input.eventId,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+    }),
+  createCategory: protectedProcedure
+    .input(
+      z.object({
+        eventId: z.string(),
+        title: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.track.create({
+        data: {
+          title: input.title,
+          description: "",
+          event: {
+            connect: {
+              id: input.eventId,
+            },
+          },
+        },
+      });
+    }),
 });
