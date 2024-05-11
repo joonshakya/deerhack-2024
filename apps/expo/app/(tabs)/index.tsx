@@ -7,7 +7,7 @@ export default function TabOneScreen() {
   const { data: healthCheck, isLoading, error } = trpc.healthCheck.useQuery();
 
   return (
-    <View style={styles.container}>
+    <View className="bg-red" style={styles.container}>
       <Text style={styles.title}>Tab One</Text>
       <Text style={styles.title}>{healthCheck}</Text>
       <View
