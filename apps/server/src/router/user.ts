@@ -28,6 +28,16 @@ const loginData = {
 };
 
 export const userRotuer = createTRPCRouter({
+  getNetworkingScore: protectedProcedure.query(async ({ ctx }) => {
+    return ctx.prisma.user.findUniqueOrThrow({
+      where: {
+        id: ctx.user.id,
+      },
+      select: {
+        networking: true,
+      },
+    });
+  }),
   me: publicProcedure.query(async ({ ctx }) => {
     if (!ctx.user) {
       return null;

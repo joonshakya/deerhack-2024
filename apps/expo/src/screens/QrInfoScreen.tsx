@@ -33,6 +33,8 @@ export default function QrInfoScreen({
   const { id, invalidate, categoryId } = route.params;
   const { authenticate } = useLocalAuthentication();
 
+  const utils = trpc.useUtils();
+
   const { data, isLoading } = trpc.track.getFromResponseId.useQuery(
     {
       responseId: id,
@@ -70,6 +72,7 @@ export default function QrInfoScreen({
   useEffect(() => {
     if (linkedIn && userRole === "PARTICIPANT") {
       Linking.openURL(linkedIn);
+      utils.user.getNetworkingScore.invalidate();
     }
   }, [linkedIn, userRole]);
 

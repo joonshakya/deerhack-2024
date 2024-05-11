@@ -61,9 +61,7 @@ export default function EventCreateScreen({
     [K in keyof FormValues]: NonNullable<FormValues[K]>;
   }) => {
     Keyboard.dismiss();
-    console.log({
-      input,
-    });
+
     mutate({
       ...input,
       date: new Date(input.date),
@@ -93,7 +91,7 @@ export default function EventCreateScreen({
 
 function FormContent() {
   const { errors } = useFormikContext<FormValues>();
-  console.log(errors);
+
   return (
     <>
       <FormField name="title" label="Event Title" />

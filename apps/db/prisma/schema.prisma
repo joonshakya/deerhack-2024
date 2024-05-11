@@ -23,8 +23,11 @@ model User {
   updatedAt             DateTime                 @updatedAt
   notifications         Notification[]
   notificationIds       String[]                 @default([])
-  events                Event[]                  @relation("EventLead")
-  volunteerEvents       EventOrganizer[]         @relation("EventOrganizerUser")
+
+  networking Int @default(0)
+
+  events          Event[]          @relation("EventLead")
+  volunteerEvents EventOrganizer[] @relation("EventOrganizerUser")
 }
 
 model Event {

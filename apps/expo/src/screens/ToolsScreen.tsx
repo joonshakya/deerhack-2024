@@ -1,11 +1,13 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Alert, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { RouteProp, useFocusEffect } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import { AppNavigatorParamList } from "~/navigation/AppNavigator";
 import { HomeTabNavigatorParamList } from "~/navigation/HomeTabNavigator";
+import { useBearStore } from "~/store";
 import { trpc } from "~/utils/trpc";
 import AppText from "../components/AppText";
 import { QrScanner } from "../components/QrScanner";
@@ -16,15 +18,25 @@ import routes from "../navigation/routes";
 
 export default function ToolsScreen({
   route,
+  navigation,
 }: {
   route: RouteProp<
     AppNavigatorParamList | HomeTabNavigatorParamList,
     routes.TOOLS
   >;
+  navigation: NativeStackNavigationProp<AppNavigatorParamList, routes.TOOLS>;
 }) {
   const { categoryId } = route.params || {
     categoryId: undefined,
   };
+
+  const utils = trpc.useUtils();
+
+  const {
+    data: networkingScore,
+    isLoading: networkingLoading,
+    refetch,
+  } = trpc.user.getNetworkingScore.useQuery();
 
   const { data: categoryData, isLoading: categoryLoading } =
     trpc.track.getCategory.useQuery({ id: categoryId || "" });
@@ -36,6 +48,16 @@ export default function ToolsScreen({
       setModalOpen(true);
     }, []),
   );
+
+  const userRole = useBearStore((state) => state.userRole);
+
+  useEffect(() => {
+    if (userRole === "PARTICIPANT" && networkingScore?.networking) {
+      navigation.setOptions({
+        headerTitle: "Networking Score: " + networkingScore?.networking,
+      });
+    }
+  }, [userRole, networkingScore]);
 
   return (
     <Screen noSafeArea className="px-5">

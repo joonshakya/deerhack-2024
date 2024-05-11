@@ -1834,10 +1834,12 @@ export namespace Prisma {
 
   export type UserAvgAggregateOutputType = {
     noOfPasswordsChanged: number | null
+    networking: number | null
   }
 
   export type UserSumAggregateOutputType = {
     noOfPasswordsChanged: number | null
+    networking: number | null
   }
 
   export type UserMinAggregateOutputType = {
@@ -1851,6 +1853,7 @@ export namespace Prisma {
     noOfPasswordsChanged: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    networking: number | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1864,6 +1867,7 @@ export namespace Prisma {
     noOfPasswordsChanged: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    networking: number | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1879,16 +1883,19 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     notificationIds: number
+    networking: number
     _all: number
   }
 
 
   export type UserAvgAggregateInputType = {
     noOfPasswordsChanged?: true
+    networking?: true
   }
 
   export type UserSumAggregateInputType = {
     noOfPasswordsChanged?: true
+    networking?: true
   }
 
   export type UserMinAggregateInputType = {
@@ -1902,6 +1909,7 @@ export namespace Prisma {
     noOfPasswordsChanged?: true
     createdAt?: true
     updatedAt?: true
+    networking?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1915,6 +1923,7 @@ export namespace Prisma {
     noOfPasswordsChanged?: true
     createdAt?: true
     updatedAt?: true
+    networking?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1930,6 +1939,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     notificationIds?: true
+    networking?: true
     _all?: true
   }
 
@@ -2032,6 +2042,7 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     notificationIds: string[]
+    networking: number
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -2066,6 +2077,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     notificationIds?: boolean
+    networking?: boolean
     messages?: boolean | User$messagesArgs<ExtArgs>
     chats?: boolean | User$chatsArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
@@ -2087,6 +2099,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     notificationIds?: boolean
+    networking?: boolean
   }
 
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2121,6 +2134,7 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       notificationIds: string[]
+      networking: number
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -2536,6 +2550,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
     readonly notificationIds: FieldRef<"User", 'String[]'>
+    readonly networking: FieldRef<"User", 'Int'>
   }
     
 
@@ -10806,7 +10821,8 @@ export namespace Prisma {
     noOfPasswordsChanged: 'noOfPasswordsChanged',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    notificationIds: 'notificationIds'
+    notificationIds: 'notificationIds',
+    networking: 'networking'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -11126,6 +11142,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     notificationIds?: StringNullableListFilter<"User">
+    networking?: IntFilter<"User"> | number
     messages?: MessageListRelationFilter
     chats?: ChatListRelationFilter
     notifications?: NotificationListRelationFilter
@@ -11146,6 +11163,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     notificationIds?: SortOrder
+    networking?: SortOrder
     messages?: MessageOrderByRelationAggregateInput
     chats?: ChatOrderByRelationAggregateInput
     notifications?: NotificationOrderByRelationAggregateInput
@@ -11169,6 +11187,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     notificationIds?: StringNullableListFilter<"User">
+    networking?: IntFilter<"User"> | number
     messages?: MessageListRelationFilter
     chats?: ChatListRelationFilter
     notifications?: NotificationListRelationFilter
@@ -11189,6 +11208,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     notificationIds?: SortOrder
+    networking?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -11212,6 +11232,7 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     notificationIds?: StringNullableListFilter<"User">
+    networking?: IntWithAggregatesFilter<"User"> | number
   }
 
   export type EventWhereInput = {
@@ -11807,6 +11828,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     notificationIds?: UserCreatenotificationIdsInput | string[]
+    networking?: number
     messages?: MessageCreateNestedManyWithoutSenderInput
     chats?: ChatCreateNestedManyWithoutParticipantsInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
@@ -11827,6 +11849,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     notificationIds?: UserCreatenotificationIdsInput | string[]
+    networking?: number
     messages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     chats?: ChatUncheckedCreateNestedManyWithoutParticipantsInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -11847,6 +11870,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notificationIds?: UserUpdatenotificationIdsInput | string[]
+    networking?: IntFieldUpdateOperationsInput | number
     messages?: MessageUpdateManyWithoutSenderNestedInput
     chats?: ChatUpdateManyWithoutParticipantsNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
@@ -11867,6 +11891,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notificationIds?: UserUpdatenotificationIdsInput | string[]
+    networking?: IntFieldUpdateOperationsInput | number
     messages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     chats?: ChatUncheckedUpdateManyWithoutParticipantsNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -11887,6 +11912,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     notificationIds?: UserCreatenotificationIdsInput | string[]
+    networking?: number
   }
 
   export type UserUpdateManyMutationInput = {
@@ -11902,6 +11928,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notificationIds?: UserUpdatenotificationIdsInput | string[]
+    networking?: IntFieldUpdateOperationsInput | number
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -11917,6 +11944,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notificationIds?: UserUpdatenotificationIdsInput | string[]
+    networking?: IntFieldUpdateOperationsInput | number
   }
 
   export type EventCreateInput = {
@@ -12682,10 +12710,12 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     notificationIds?: SortOrder
+    networking?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
     noOfPasswordsChanged?: SortOrder
+    networking?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -12699,6 +12729,7 @@ export namespace Prisma {
     noOfPasswordsChanged?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    networking?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -12712,10 +12743,12 @@ export namespace Prisma {
     noOfPasswordsChanged?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    networking?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
     noOfPasswordsChanged?: SortOrder
+    networking?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -14704,6 +14737,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     notificationIds?: UserCreatenotificationIdsInput | string[]
+    networking?: number
     messages?: MessageCreateNestedManyWithoutSenderInput
     chats?: ChatCreateNestedManyWithoutParticipantsInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
@@ -14723,6 +14757,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     notificationIds?: UserCreatenotificationIdsInput | string[]
+    networking?: number
     messages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     chats?: ChatUncheckedCreateNestedManyWithoutParticipantsInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -14846,6 +14881,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notificationIds?: UserUpdatenotificationIdsInput | string[]
+    networking?: IntFieldUpdateOperationsInput | number
     messages?: MessageUpdateManyWithoutSenderNestedInput
     chats?: ChatUpdateManyWithoutParticipantsNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
@@ -14865,6 +14901,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notificationIds?: UserUpdatenotificationIdsInput | string[]
+    networking?: IntFieldUpdateOperationsInput | number
     messages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     chats?: ChatUncheckedUpdateManyWithoutParticipantsNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -15089,6 +15126,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     notificationIds?: UserCreatenotificationIdsInput | string[]
+    networking?: number
     messages?: MessageCreateNestedManyWithoutSenderInput
     chats?: ChatCreateNestedManyWithoutParticipantsInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
@@ -15108,6 +15146,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     notificationIds?: UserCreatenotificationIdsInput | string[]
+    networking?: number
     messages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     chats?: ChatUncheckedCreateNestedManyWithoutParticipantsInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -15192,6 +15231,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notificationIds?: UserUpdatenotificationIdsInput | string[]
+    networking?: IntFieldUpdateOperationsInput | number
     messages?: MessageUpdateManyWithoutSenderNestedInput
     chats?: ChatUpdateManyWithoutParticipantsNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
@@ -15211,6 +15251,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notificationIds?: UserUpdatenotificationIdsInput | string[]
+    networking?: IntFieldUpdateOperationsInput | number
     messages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     chats?: ChatUncheckedUpdateManyWithoutParticipantsNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -15508,6 +15549,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     notificationIds?: UserCreatenotificationIdsInput | string[]
+    networking?: number
     messages?: MessageCreateNestedManyWithoutSenderInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     events?: EventCreateNestedManyWithoutLeadInput
@@ -15527,6 +15569,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     notificationIds?: UserCreatenotificationIdsInput | string[]
+    networking?: number
     messages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     events?: EventUncheckedCreateNestedManyWithoutLeadInput
@@ -15586,6 +15629,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     notificationIds?: StringNullableListFilter<"User">
+    networking?: IntFilter<"User"> | number
   }
 
   export type UserCreateWithoutMessagesInput = {
@@ -15601,6 +15645,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     notificationIds?: UserCreatenotificationIdsInput | string[]
+    networking?: number
     chats?: ChatCreateNestedManyWithoutParticipantsInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     events?: EventCreateNestedManyWithoutLeadInput
@@ -15620,6 +15665,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     notificationIds?: UserCreatenotificationIdsInput | string[]
+    networking?: number
     chats?: ChatUncheckedCreateNestedManyWithoutParticipantsInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     events?: EventUncheckedCreateNestedManyWithoutLeadInput
@@ -15676,6 +15722,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notificationIds?: UserUpdatenotificationIdsInput | string[]
+    networking?: IntFieldUpdateOperationsInput | number
     chats?: ChatUpdateManyWithoutParticipantsNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     events?: EventUpdateManyWithoutLeadNestedInput
@@ -15695,6 +15742,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notificationIds?: UserUpdatenotificationIdsInput | string[]
+    networking?: IntFieldUpdateOperationsInput | number
     chats?: ChatUncheckedUpdateManyWithoutParticipantsNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     events?: EventUncheckedUpdateManyWithoutLeadNestedInput
@@ -15741,6 +15789,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     notificationIds?: UserCreatenotificationIdsInput | string[]
+    networking?: number
     messages?: MessageCreateNestedManyWithoutSenderInput
     chats?: ChatCreateNestedManyWithoutParticipantsInput
     events?: EventCreateNestedManyWithoutLeadInput
@@ -15760,6 +15809,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     notificationIds?: UserCreatenotificationIdsInput | string[]
+    networking?: number
     messages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     chats?: ChatUncheckedCreateNestedManyWithoutParticipantsInput
     events?: EventUncheckedCreateNestedManyWithoutLeadInput
@@ -15795,6 +15845,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notificationIds?: UserUpdatenotificationIdsInput | string[]
+    networking?: IntFieldUpdateOperationsInput | number
     messages?: MessageUpdateManyWithoutSenderNestedInput
     chats?: ChatUpdateManyWithoutParticipantsNestedInput
     events?: EventUpdateManyWithoutLeadNestedInput
@@ -15814,6 +15865,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notificationIds?: UserUpdatenotificationIdsInput | string[]
+    networking?: IntFieldUpdateOperationsInput | number
     messages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     chats?: ChatUncheckedUpdateManyWithoutParticipantsNestedInput
     events?: EventUncheckedUpdateManyWithoutLeadNestedInput
@@ -16250,6 +16302,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notificationIds?: UserUpdatenotificationIdsInput | string[]
+    networking?: IntFieldUpdateOperationsInput | number
     messages?: MessageUpdateManyWithoutSenderNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     events?: EventUpdateManyWithoutLeadNestedInput
@@ -16269,6 +16322,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notificationIds?: UserUpdatenotificationIdsInput | string[]
+    networking?: IntFieldUpdateOperationsInput | number
     messages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     events?: EventUncheckedUpdateManyWithoutLeadNestedInput
@@ -16288,6 +16342,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notificationIds?: UserUpdatenotificationIdsInput | string[]
+    networking?: IntFieldUpdateOperationsInput | number
   }
 
 

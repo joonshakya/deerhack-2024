@@ -119,7 +119,8 @@ exports.Prisma.UserScalarFieldEnum = {
   noOfPasswordsChanged: 'noOfPasswordsChanged',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  notificationIds: 'notificationIds'
+  notificationIds: 'notificationIds',
+  networking: 'networking'
 };
 
 exports.Prisma.EventScalarFieldEnum = {

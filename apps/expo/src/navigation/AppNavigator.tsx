@@ -122,7 +122,6 @@ export default function AppNavigator() {
                     {
                       text: "OK",
                       onPress: (categoryName) => {
-                        console.log("OK Pressed", categoryName);
                         createCategory({
                           eventId: route.params.eventId,
                           title: categoryName || "New Category",

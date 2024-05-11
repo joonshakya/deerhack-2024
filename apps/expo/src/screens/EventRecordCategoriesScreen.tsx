@@ -41,10 +41,6 @@ export default function EventRecordCategoriesScreen({
     eventId,
   });
 
-  console.log({
-    categories,
-  });
-
   const ref = useRef<Text>(null);
 
   return (

@@ -51,6 +51,16 @@ export const responseRouter = createTRPCRouter({
       }),
     )
     .query(async ({ ctx, input }) => {
+      await ctx.prisma.user.update({
+        where: {
+          id: ctx.user.id,
+        },
+        data: {
+          networking: {
+            increment: 1,
+          },
+        },
+      });
       return (
         await ctx.prisma.response.findUnique({
           where: {
