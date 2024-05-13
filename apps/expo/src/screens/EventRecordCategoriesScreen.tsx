@@ -1,18 +1,23 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   AccessibilityInfo,
   findNodeHandle,
+  Modal,
   RefreshControl,
   Text,
   TouchableHighlight,
+  TouchableOpacity,
   View,
 } from "react-native";
+import * as WebBrowser from "expo-web-browser";
+import PDFReader from "@bildau/rn-pdf-reader";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { RouteProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { colors } from "tailwind.config";
 
 import ActivityIndicator from "~/components/ActivityIndicator";
+import AppButton from "~/components/AppButton";
 import InfoText from "~/components/InfoText";
 import { trpc } from "~/utils/trpc";
 import AppText from "../components/AppText";
@@ -43,6 +48,8 @@ export default function EventRecordCategoriesScreen({
 
   const ref = useRef<Text>(null);
 
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <>
       <ActivityIndicator visible={categoriesLoading} />
@@ -56,7 +63,7 @@ export default function EventRecordCategoriesScreen({
             }}
           />
         }
-        className="px-5 pb-20"
+        className="flex-1 px-5 pb-20"
       >
         {categories ? (
           <View className="mt-2">
@@ -94,6 +101,41 @@ export default function EventRecordCategoriesScreen({
           </View>
         ) : null}
       </Screen>
+      <View className="bg-white px-5 pb-4">
+        <AppButton
+          title="Generate QR Code"
+          onPress={() => {
+            setModalVisible(true);
+          }}
+        />
+      </View>
+      <Modal
+        collapsable
+        animationType="slide"
+        transparent={false}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <PDFReader
+          style={{
+            flex: 1,
+          }}
+          source={{
+            uri: "https://deerhack.joon.com.np/generateQR.pdf",
+          }}
+        />
+        <TouchableOpacity
+          className="absolute right-4 top-12 h-14 w-14 flex-row items-center justify-center rounded-full bg-[#0000006e]"
+          onPress={() => setModalVisible(false)}
+        >
+          <MaterialCommunityIcons
+            className="m-4"
+            color={colors.white}
+            name="close"
+            size={40}
+          />
+        </TouchableOpacity>
+      </Modal>
     </>
   );
 }

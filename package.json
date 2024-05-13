@@ -1,5 +1,5 @@
 {
-  "name": "chain-for-change-turborepo",
+  "name": "deerhack-turborepo",
   "private": true,
   "engines": {
     "node": ">=20.9.0"

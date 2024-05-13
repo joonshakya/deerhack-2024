@@ -49,6 +49,9 @@ importers:
 
   apps/expo:
     dependencies:
+      '@bildau/rn-pdf-reader':
+        specifier: ^4.2.7
+        version: 4.2.7(expo-constants@16.0.1)(expo-file-system@17.0.1)(expo@51.0.2)(react-native-webview@13.8.6)(react-native@0.74.1)(react@18.2.0)
       '@expo/config':
         specifier: ~9.0.1
         version: 9.0.1
@@ -2732,6 +2735,27 @@ packages:
       '@babel/helper-string-parser': 7.24.1
       '@babel/helper-validator-identifier': 7.24.5
       to-fast-properties: 2.0.0
+
+  /@bildau/rn-pdf-reader@4.2.7(expo-constants@16.0.1)(expo-file-system@17.0.1)(expo@51.0.2)(react-native-webview@13.8.6)(react-native@0.74.1)(react@18.2.0):
+    resolution: {integrity: sha512-hzdDHy6NmiIXAhotWd22BdnvLIFQpuX0M3idaNAuzLc11itHPK8uRWR58I4OWmx/RI9W7GyNesMZX3tSFUiaRA==}
+    peerDependencies:
+      expo: '>= 42.0.x'
+      expo-constants: '>= 9.x'
+      expo-file-system: '>= 9.x'
+      react: '>= 16.x'
+      react-native: '*'
+      react-native-webview: '>= 11.x'
+    dependencies:
+      buffer: 5.1.0
+      csstype: 2.6.8
+      expo: 51.0.2(@babel/core@7.24.5)(@babel/preset-env@7.23.2)
+      expo-constants: 16.0.1(expo@51.0.2)
+      expo-file-system: 17.0.1(expo@51.0.2)
+      js-base64: 2.4.5
+      react: 18.2.0
+      react-native: 0.74.1(@babel/core@7.24.5)(@babel/preset-env@7.23.2)(@types/react@18.2.79)(react@18.2.0)
+      react-native-webview: 13.8.6(react-native@0.74.1)(react@18.2.0)
+    dev: false
 
   /@cspotcode/source-map-support@0.8.1:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -7174,6 +7198,13 @@ packages:
   /buffer-from@1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
 
+  /buffer@5.1.0:
+    resolution: {integrity: sha512-YkIRgwsZwJWTnyQrsBTWefizHh+8GYj3kbL1BTiAQ/9pwpino0G7B2gp5tx/FUBqUlvtxV85KNR3mwfAtv15Yw==}
+    dependencies:
+      base64-js: 1.5.1
+      ieee754: 1.2.1
+    dev: false
+
   /buffer@5.7.1:
     resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
     dependencies:
@@ -7795,6 +7826,10 @@ packages:
     resolution: {integrity: sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==}
     engines: {node: '>=4'}
     hasBin: true
+    dev: false
+
+  /csstype@2.6.8:
+    resolution: {integrity: sha512-msVS9qTuMT5zwAGCVm4mxfrZ18BNc6Csd0oJAtiFMZ1FAx1CCvy2+5MDmYoix63LM/6NDbNtodCiGYGmFgO0dA==}
     dev: false
 
   /csstype@3.1.2:
@@ -10768,6 +10803,10 @@ packages:
 
   /join-component@1.1.0:
     resolution: {integrity: sha512-bF7vcQxbODoGK1imE2P9GS9aw4zD0Sd+Hni68IMZLj7zRnquH7dXUmMw9hDI5S/Jzt7q+IyTXN0rSg2GI0IKhQ==}
+    dev: false
+
+  /js-base64@2.4.5:
+    resolution: {integrity: sha512-aUnNwqMOXw3yvErjMPSQu6qIIzUmT1e5KcU1OZxRDU1g/am6mzBvcrmLAYwzmB59BHPrh5/tKaiF4OPhqRWESQ==}
     dev: false
 
   /js-tokens@4.0.0:

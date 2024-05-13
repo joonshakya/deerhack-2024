@@ -15,7 +15,9 @@ const settings = {
     wsUrl,
   },
   prod: {
-    apiUrl: "https://api.example.org.np",
+    apiUrl,
+
+    // apiUrl: "https://api.example.org.np",
     webUrl: "https://www.example.org.np",
     wsUrl,
   },
